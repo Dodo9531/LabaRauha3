@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,9 +19,9 @@ namespace SWS3
             chart1.Series[0].Points.Clear();
             chart1.Series[1].Points.Clear();
         }
-        public int Factorial(int n)
+        public long Factorial(int n)
         {
-            var factorial = 1;
+            long factorial = 1;
             for (int i = 1; i <= n; i++)
                 factorial *= i;
 
@@ -31,7 +32,7 @@ namespace SWS3
             chart1.Series[0].Points.Clear();
             chart1.Series[1].Points.Clear();
             Random random = new Random(); 
-            double λ = 1;
+            double λ = Double.Parse(textBox3.Text);
             double t = Double.Parse(textBox1.Text);
             double numExperiments = Double.Parse(textBox2.Text);
             List<double> list = new List<double>(); // Счётчик количества отказов
@@ -63,21 +64,14 @@ namespace SWS3
                 }
                 list[i] /= numExperiments;
             }
-            
-          //  double interval = (double) maxHits / 20;
-            int c = 0;
-            while (c <= maxHits)
-            {
-                
+
                 for (int i = 0; i < maxHits; i++)
                 {
                     chart1.Series[0].Points.AddXY(i, list[i]);
-                    double counter = Math.Pow(λ * t, c) / Factorial(c) * Math.Exp(-λ * t);
-                    chart1.Series[1].Points.AddXY(c, counter);
+                    double counter = Math.Pow(λ * t, i)/Factorial(i) * Math.Exp(-λ * t);
+                    chart1.Series[1].Points.AddXY(i, counter); // BigInteger to dDouble
                 }
-                //c += interval;
-                c++;
             }
         }
     }
-}
+
